@@ -74,7 +74,7 @@ function EmployeeValidationForm() {
         />
         {!isJoiningDateValid(joindate)&&(<p className="error mt-2">Joining Date cannot be in the future</p>)}
       </div>
-      <button data-testid="submit-btn" type="submit" onClick={handleSubmit}>
+      <button data-testid="submit-btn" type="submit" disabled={!validInput} onClick={handleSubmit}>
         Submit
       </button>
     </div>
