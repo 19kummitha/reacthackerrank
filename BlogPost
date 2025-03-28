@@ -1,0 +1,77 @@
+//Create a post with title and descritpion when i click on submit,The list of posts will display and there is option to delete each post.
+Home
+import React,{useState} from "react";
+import Input from "./Input";
+import PostDisplay from "./PostDisplay";
+
+function Home() {
+  const [posts,setPosts]=useState([])
+  const handleCreate = (title, description) => {
+    if (title.trim() !== "" && description.trim() !== "") {
+      setPosts([...posts, { title, description }]); 
+    }
+  };
+  const deletePost=(index)=>{
+    setPosts(posts.filter((_,i)=>i!=index));
+  }
+  return (
+    <div className="text-center ma-20">
+      <div className="mb-20">
+        <Input addPost={handleCreate}/>
+      </div>
+      <div className="posts-section">
+        <PostDisplay posts={posts} deletePost={deletePost} />
+      </div>
+    </div>
+  );
+}
+
+export default Home;
+
+import React, { useState } from "react";
+
+function Input({addPost}) {
+  const [input,setInput]=useState("")
+  const [description,setDescritpion]=useState("")
+  const handleSubmit=()=>{
+    if(input.trim()&&description.trim())
+    {
+      addPost(input,description);
+      setDescritpion("");
+      setInput("");
+    }
+  }
+  return (
+    <div className="layout-column justify-content-center align-items-center">
+      <input className="w-100" type="text" placeholder="Enter Title" value={input} 
+      onChange={(e)=>setInput(e.target.value)} data-testid="title-input" />
+      <textarea className="mt-10 w-100" placeholder="Enter Description" value={description} onChange={(e)=>setDescritpion(e.target.value)} data-testid="description-input" />
+        <button data-testid="create-button" className="mt-10" onClick={handleSubmit}>
+          Create Post
+        </button>
+    </div>
+  );
+}
+
+export default Input;
+
+
+import React from "react";
+
+function PostDisplay({posts,deletePost}) {
+  
+  return (
+    <div data-testid="posts-container" className="flex wrap gap-10">
+      {posts.map((post,index)=>(
+        <div key={index} className="post-box">
+        <h3>{post.title}</h3>
+        <p>{post.description}</p>
+        <button onClick={()=>deletePost(index)}>Delete</button>
+      </div>
+      ))}
+      
+    </div>
+  );
+}
+
+export default PostDisplay;
