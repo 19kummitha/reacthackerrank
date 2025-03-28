@@ -1,0 +1,51 @@
+import React, { useEffect, useState } from "react";
+
+const FeedbackSystem = () => {
+  const [cards,setCards]=useState([]);
+  const [ups,setUps]=useState([0,0,0,0,0]);
+  const [downs,setDowns]=useState([0,0,0,0,0]);
+  useEffect(()=>{
+    setCards(MakeCards())
+  },[ups,downs]);
+  const handleUpvote=(pl)=>{
+   let up = [...ups]
+    up[pl] = parseInt(up[pl]) + 1
+    setUps(up)
+  }
+  const handleDownvote=(pl)=>{
+    let dn = [...downs]
+    dn[pl] = parseInt(dn[pl]) + 1
+    setDowns(dn)
+  }
+  const labels = ['Readability', 'Performance', 'Security', 'Documentation', 'Testing']
+  const MakeCards=()=>labels.map((label,pl)=>(
+    <div className="my-0 mx-auto text-center w-mx-1200">
+      <div className="flex wrap justify-content-center mt-30 gap-30">
+        <div className="pa-10 w-300 card">
+          <h2>{label}</h2>
+          <div className="flex my-30 mx-0 justify-content-around">
+            <button className="py-10 px-15" data-testid="upvote-btn-0" onClick={()=>handleUpvote(pl)}>
+              👍 Upvote
+            </button>
+            <button className="py-10 px-15 danger" data-testid="downvote-btn-0" onClick={()=>handleDownvote(pl)}>
+              👎 Downvote
+            </button>
+          </div>
+          <p className="my-10 mx-0" data-testid="upvote-count-0">
+            Upvotes: <strong>{ups[pl]}</strong>
+          </p>
+          <p className="my-10 mx-0" data-testid="downvote-count-0">
+            Downvotes: <strong>{downs[pl]}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  ))
+  return (
+    <div>
+      {cards&&cards}
+    </div>
+  );
+};
+
+export default FeedbackSystem;
