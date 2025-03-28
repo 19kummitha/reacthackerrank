@@ -1,0 +1,86 @@
+//In the articles list is in another file with each element contains title,upvotes,date as list data
+import React from "react";
+
+function Articles({ articles = [] }) {
+  return (
+    <div className="card w-50 mx-auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Upvotes</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {articles.map((item,index)=>(
+            <tr data-testid="article" key={index}>
+            <td data-testid="article-title">{item.title}</td>
+            <td data-testid="article-upvotes">{item.upvotes}</td>
+            <td data-testid="article-date">{item.date}</td>
+          </tr>
+          ))}
+          
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default Articles;
+
+import "h8k-components";
+import {useState} from 'react';
+import Articles from "./components/Articles";
+
+import "./App.css";
+
+function App({ articles }) {
+  const [orderedBy,setOrderBy]=useState('upvotes');
+  if(orderedBy == 'recent') {
+    articles.sort((a,b) => 
+      new Date(b.date) - new Date(a.date))
+  }
+
+  if(orderedBy == 'upvotes') {
+    articles.sort((a,b) => 
+      new Date(b.upvotes) - new Date(a.upvotes))
+  }
+  const handleMostUpvoted = () => {
+    setOrderBy('upvotes')
+  };
+
+  const handleMostRecent = () => {
+    setOrderBy('recent')
+  };
+  return (
+    <>
+      <h8k-navbar header="Sorting Articles"></h8k-navbar>
+      <div className="App">
+        <div className="layout-row align-items-center justify-content-center my-20 navigation">
+          <label className="form-hint mb-0 text-uppercase font-weight-light">
+            Sort By
+          </label>
+          <button
+            data-testid="most-upvoted-link"
+            className="small"
+            onClick={handleMostUpvoted}
+          >
+            Most Upvoted
+          </button>
+          <button
+            data-testid="most-recent-link"
+            className="small"
+            onClick={handleMostRecent}
+          >
+            Most Recent
+          </button>
+        </div>
+        <Articles articles={articles} />
+      </div>
+    </>
+  );
+}
+
+export default App;
+
